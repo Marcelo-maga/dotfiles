@@ -13,19 +13,9 @@
           "type": "time",
           "style": "plain",
           "foreground": "#ffffff",
-          "background": "#003543",
+          "background": "#845EC2",
           "properties": {
             "prefix": " \uf64f "
-          }
-        },
-        {
-          "type": "executiontime",
-          "style": "plain",
-          "foreground": "#ffffff",
-          "background": "#83769c",
-          "properties": {
-            "always_enabled": true,
-            "prefix": " 羽"
           }
         }
       ]
@@ -38,7 +28,7 @@
           "type": "session",
           "style": "diamond",
           "foreground": "#ffffff",
-          "background": "#61AFEF",
+          "background": "#845EC2",
           "trailing_diamond": "\uE0B0",
           "properties": {
             "prefix": "",
@@ -51,8 +41,8 @@
           "type": "path",
           "style": "powerline",
           "powerline_symbol": "\uE0B0",
-          "foreground": "ffffff",
-          "background": "#C678DD",
+          "foreground": "#ffffff",
+          "background": "#2C73D2",
           "properties": {
             "max_depth": 2,
             "folder_icon": "\uF115",
@@ -64,8 +54,8 @@
           "type": "git",
           "style": "powerline",
           "powerline_symbol": "\uE0B0",
-          "foreground": "#193549",
-          "background": "#95ffa4",
+          "foreground": "#ffffff",
+          "background": "#008E9B",
           "properties": {
             "template": "{{ .HEAD }}"
           }
