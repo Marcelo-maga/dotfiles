@@ -1,54 +1,55 @@
 call plug#begin()
-  Plug 'sainnhe/sonokai'
+	Plug 'sainnhe/sonokai'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'dense-analysis/ale'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
-  Plug 'ryanoasis/vim-devicons'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'preservim/nerdtree'
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
-  Plug 'dense-analysis/ale'
-call plug#end()   
-
-
-"Global Sets """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-syntax on            " Enable syntax highlight
-set nu               " Enable line numbers
-set tabstop=2        " Show existing tab with 4 spaces width
-set softtabstop=2    " Show existing tab with 4 spaces width
-set shiftwidth=2     " When indenting with '>', use 4 spaces width
-set expandtab        " On pressing tab, insert 4 spaces
-set smarttab         " insert tabs on the start of a line according to shiftwidth
-set smartindent      " Automatically inserts one extra level of indentation in some cases
-set hidden           " Hides the current buffer when a new file is openned
-set incsearch        " Incremental search
-set ignorecase       " Ingore case in search
-set smartcase        " Consider case if there is a upper case character
-set scrolloff=8      " Minimum number of lines to keep above and below the cursor
-set cmdheight=2      " Give more space for displaying messages
-set updatetime=100   " Time in miliseconds to consider the changes
-set encoding=utf-8   " The encoding should be utf-8 to activate the font icons
-set nobackup         " No backup files
-set nowritebackup    " No backup files
-set splitright       " Create the vertical splits to the right
-set splitbelow       " Create the horizontal splits below
-set autoread         " Update vim after file update from outside
-set mouse=a          " Enable mouse support
-filetype on          " Detect and set the filetype option and trigger the FileType Event
-filetype plugin on   " Load the plugin file for the file type, if any
-filetype indent on   " Load the indent file for the file type, if any
+  Plug 'ObserverOfTime/coloresque.vim'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
+call plug#end()
 
 
 
-" Remaps """"""""""
-nmap <C-s> :w<CR> " Para salvar
-nmap <c-q> :q<CR> " Para sair
-nmap <C-a> : NERDTreeToggle<CR> " Abre a arvore de arquivos
-nmap <C-f> :NERDTreeFind<CR>    " Buscar
-nmap <C-z> u " Ctrl + z de lei né kk
+" Configurações Globais "
+syntax on
+set nu
+set tabstop=2   
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set smarttab
+set smartindent
+set hidden
+set incsearch
+set ignorecase
+set smartcase
+set scrolloff=8
+set cmdheight=2
+set updatetime=100
+set encoding=utf-8
+set nobackup
+set nowritebackup
+set splitright
+set splitbelow
+set autoread
+set mouse=a
+filetype on
+filetype plugin on
+filetype indent on
 
 
-" Themes """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Remaps "
+nmap <c-s> :w<cr>
+nmap <c-q> :q<cr>
+nmap <c-z> u<cr>
+nmap <space>e <Cmd>CocCommand explorer<CR>a
+nmap <c-p> :Files<cr>
+
+" Theme "
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -70,18 +71,77 @@ endif
 
 
 
-" AirLine """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" AirLine "
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 
+" Ale "
+let b:ale_fixers = ['prettier', 'eslint']
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
 
-" ALE """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ale_linters = {
-\}
 
-let g:ale_fixers = {
-\   '*': ['trim_whitespace'],
-\}
 
-let g:ale_fix_on_save = 1
+" Coc "
+let g:coc_global_extensions = [ 
+\ 'coc-explorer',
+\ 'coc-snippets',
+\ 'coc-emmet',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-json', 
+\ 'coc-phpls',
+\ 'coc-yaml',
+\ 'coc-prettier',
+\ 'coc-eslint',
+\ 'coc-tsserver',
+\ 'coc-jedi',
+\ 'coc-pairs',
+\ 'coc-terminal',
+\ ]
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Terminal "
+" Mude para o modo normal com o esc
+tnoremap <Esc> <C-\><C-j>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+function! OpenTerminal()
+  split term://zsh
+  resize 5
+endfunction
+nmap <c-t> :call OpenTerminal()<CR>
+
+" use alt+hjkl para mover entre split/vsplit paineis
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
